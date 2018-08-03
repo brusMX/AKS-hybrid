@@ -4,6 +4,8 @@ A repo to put together hacks and tips on how to deploy a hybrid scenario of an A
 
 This is a simple diagram of what we want to accomplish regarding infrastructure:
 
+![Azure Kubernetes Service consuming services on premise](img/aks-hybrid-arch.png)
+
 
 ## Deploying a test environment
 
