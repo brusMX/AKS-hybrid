@@ -1,4 +1,4 @@
-# How to install DTR secure in Azure
+# How to install a secure DTR in Azure
 
 ## Requirements
 
