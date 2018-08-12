@@ -108,6 +108,7 @@ sed -i s#"$OLD_PATH"#"$NEW_PATH"#g harbor.cfg
 OLD_PATH="ssl_cert_key\ =\ /data/cert/server.key"
 NEW_PATH="ssl_cert_key\ =\ /root/cert/$VM_URL.key"
 sed -i s#"$OLD_PATH"#"$NEW_PATH"#g harbor.cfg
+sed -i s#"ui_url_protocol\ =\ http"#"ui_url_protocol\ =\ https"#g harbor.cfg
 
 echo
 echo "--  **Replacing chars hostname with: $VM_URL*"

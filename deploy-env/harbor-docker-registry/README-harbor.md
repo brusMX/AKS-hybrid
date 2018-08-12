@@ -1,17 +1,31 @@
 # How to deploy a secure container registry and store the certificates to Azure key vault
 
-1. Create an Ubuntu 16.04 VM in your resource group:
+1. Create the variables you are going to need:
 
     ```bash
     RG=mygoodoldresourcegroup
+    LOC=eastus
     VM_NAME=harbor-vm
+    DNS_NAME=${USER}-${RANDOM:0:5}
+    ```
+1. Create Resource Group
+
+    ```bash
+    az group create -n $RG -l $LOC
+    ```
+
+1. Create an Ubuntu 16.04 VM in your resource group:
+
+    ```bash
     az vm create \
     --resource-group $RG \
     --name  $VM_NAME \
     --image UbuntuLTS \
     --admin-username $USER \
-    --generate-ssh-keys
+    --generate-ssh-keys \
+    --public-ip-address-dns-name $DNS_NAME\
     --size "Standard_D2_v3"
+
     ```
 1. Install the custom vm extension to get the VM ready for harbor:
 
@@ -21,7 +35,7 @@
     --vm-name $VM_NAME \
     --name customScript \
     --publisher Microsoft.Azure.Extensions \
-      --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/brusMX/AKS-hybrid/master/deploy-env/harbor-docker-registry/harbor-pre-setup.sh"],"commandToExecute": "./harbor-pre-setup.sh"}'
+      --protected-settings '{"fileUris": ["https://raw.githubusercontent.com/brusMX/AKS-hybrid/master/deploy-env/harbor-docker-registry/harbor-setup.sh"],"commandToExecute": "./harbor-setup.sh"}'
     ```
 
 2. [Install Harbor Container Registry on it](https://github.com/vmware/harbor/blob/master/docs/installation_guide.md), to ssh into the machine you can run the following command:
