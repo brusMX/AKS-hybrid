@@ -7,7 +7,8 @@
 # Openssl	latest is prefered	Generate certificate and keys for Harbor
 
 # updating
-echo "Updating and install apt stuff"
+echo "--  **Updating and install apt stuff**"
+echo
 apt-get update 
 apt -y install \
     python-pip \
@@ -16,11 +17,14 @@ apt -y install \
     curl \
     software-properties-common
 
-echo "Installed stuff now getting docker gpg"
+echo
+echo "--   **Installed stuff now getting docker gpg**"
+echo
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
-echo "Adding right repo for docker ce"
-
+echo
+echo "--  **Adding right repo for docker ce**"
+echo
 add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
@@ -28,17 +32,19 @@ add-apt-repository \
 
 apt-get update 
 
-echo "Installing docker-ce"
-
+echo
+echo "--   **Installing docker-ce**"
+echo 
 apt-get -y install docker-ce
 
-echo "Downloading docker compose"
-
+echo
+echo "-- **Downloading docker compose**"
+echo
 curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
-
-echo "upgrad open ssl"
-
+echo
+echo "--  **Upgrade open ssl**"
+echo
 apt -y upgrade openssl
