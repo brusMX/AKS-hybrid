@@ -39,7 +39,17 @@ Let's also rememebet that the Kubernetes service IP address range:
 In order to have a valid set of certificates for our registry, we will be using the free certificates from Comodo.
 
 - [Set up your free comodo SSL certificates](obtaining-certs.md)
-  
+
+## Deploying a daemonset to upload ca.crt to nodes
+
+In order to trust the container registy we created, we need to allow tell docker to trust this new entity. Run the following command to do so"
+
+```bash
+cd daemonset-certs
+kubectl apply -f upload-ca-cert-daemon.yml
+```
+
+
 ## On-prem registry
 
 There are two registries we could use to emulate our on-prem registry scenario:
