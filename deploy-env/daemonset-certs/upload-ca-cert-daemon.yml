@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-installer
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    app: dtr-cert-installer
+  name: dtr-cert-installer
+  namespace: cert-installer
+spec:
+  template:
+    metadata:
+      labels:
+        app: dtr-cert-installer
+    spec:
+      tolerations:
+      containers:
+        # * if you have used flex before on your cluster, use same directory
+        # set TARGET_DIR env var and mount the same directory to to the container
+      - name: cert-downloader
+        image: "byrnedo/alpine-curl:0.1.5"
+        command: ["/bin/sh"]
+        args: ["-c", "mkdir -p /docker/certs.d/$(DTR_URL_N_PORT) && curl -k $(CA_URL) -o /docker/certs.d/$(DTR_URL_N_PORT)/ca.crt"]
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 50m
+            memory: 10Mi
+          limits:
+            cpu: 50m
+            memory: 10Mi
+        env:
+        #forces the container not to exit 
+        # to solve for this https://github.com/kubernetes/kubernetes/issues/17182
+        # until it is fixed
+        - name: DTR_URL_N_PORT
+          value: "harbor-2323.eastus.cloudapp.azure.com"
+        - name: CA_URL
+          value: "https://harbor-2323.eastus.cloudapp.azure.com/ca"
+        volumeMounts:
+        - mountPath: "/docker"
+        
+          name: docker
+      volumes:
+      - hostPath:
+          path: "/etc/docker" #Modify this directory if your nodes are using a different one
+        name: docker
+      nodeSelector:
+        beta.kubernetes.io/os: linux
