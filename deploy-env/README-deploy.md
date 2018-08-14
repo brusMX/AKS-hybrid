@@ -49,6 +49,18 @@ cd daemonset-certs
 kubectl apply -f upload-ca-cert-daemon.yml
 ```
 
+Now, add the secret of the Container Registry to the kubernetes cluster:
+
+```bash
+kubectl create secret docker-registry myregistrykey --docker-server=https://<< DTR URL >>:<< DTR PORT >> --docker-username=<< DTR USERNAME >> --docker-password=<< DTR password >> --docker-email=<< A proper email value >>
+```
+
+Now, deploy a deployment and make sure that the secret is in place inside for the container reference:
+
+```yaml
+imagePullSecrets:
+- name: myregistrykey
+```
 
 ## On-prem registry
 
